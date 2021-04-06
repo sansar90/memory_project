@@ -1,22 +1,19 @@
-import React from 'react'
-import MainRouter from './MainRouter'
-import {BrowserRouter} from 'react-router-dom'
+import React from 'react';
+import { Route } from 'react-router-dom';
 
-import { hot } from 'react-hot-loader'
+import Dashboard from './components/Dashboard/Dashboard';
+import VideoPlayer from './components/VideoPlayer/VideoPlayer';
+import Upload from './components/Upload/Upload';
 
-const App = () => {
-  React.useEffect(() => {
-    const jssStyles = document.querySelector('#jss-server-side')
-    if (jssStyles) {
-      jssStyles.parentNode.removeChild(jssStyles)
-    }
-  }, [])
+function App() {
   return (
-  <BrowserRouter>
-     
-        <MainRouter/>
+    <React.Fragment>
+      <Route exact path="/video" component={Dashboard} />
+      <Route exact path="/video/:videoTitle" component={VideoPlayer} />
+      <Route exact path="/upload" component={Upload} />
       
-  </BrowserRouter>
-)}
+    </React.Fragment>
+  );
+}
 
-export default hot(module)(App)
+export default App;
