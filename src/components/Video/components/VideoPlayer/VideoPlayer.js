@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 
 import videojs from 'video.js';
-import './VideoPlayer.css';
+
 
 
 class VideoPlayer extends React.Component {

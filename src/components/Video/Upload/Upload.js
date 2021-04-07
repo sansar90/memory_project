@@ -1,110 +1,193 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react'
+import { Typography, Button, Form, message, Input, Icon } from 'antd';
+import * as Dropzone from 'react-dropzone';
 import axios from 'axios';
-import { Progress } from 'reactstrap';
-import { ToastContainer, toast } from 'react-toastify';
-import { Redirect } from 'react-router-dom';
+import { useSelector } from "react-redux";
 
-import 'react-toastify/dist/ReactToastify.css';
-import './Upload.css';
+const { Title } = Typography;
+const { TextArea } = Input;
+
+const Private = [
+    { value: 0, label: 'Private' },
+    { value: 1, label: 'Public' }
+]
+
+const Catogory = [
+    { value: 0, label: "Film & Animation" },
+    { value: 0, label: "Autos & Vehicles" },
+    { value: 0, label: "Music" },
+    { value: 0, label: "Pets & Animals" },
+    { value: 0, label: "Sports" },
+]
+
+function Upload(props) {
+    const user = useSelector(state => state.user);
+
+    const [title, setTitle] = useState("");
+    const [Description, setDescription] = useState("");
+    const [privacy, setPrivacy] = useState(0)
+    const [Categories, setCategories] = useState("Film & Animation")
+    const [FilePath, setFilePath] = useState("")
+    const [Duration, setDuration] = useState("")
+    const [Thumbnail, setThumbnail] = useState("")
 
 
-class Upload extends React.Component {
-  state = {
-    selectedVideos: null,
-    loaded: 0
-  }
+    const handleChangeTitle = (event) => {
+        setTitle(event.currentTarget.value)
+    }
 
-  maxSelectFile(event) {
-    let files = event.target.files;
-    if (files.length > 1) {
-      toast.error('Maximum 1 file is allowed');
-      event.target.value = null;
-      return false;
-    } else {
-      let err = '';
-      for (let i = 0; i < files.length; i++) {
-        if (files[i].size > 52428800) { // 50 MB
-          err += files[i].name + ', ';
+    const handleChangeDecsription = (event) => {
+        console.log(event.currentTarget.value)
+
+        setDescription(event.currentTarget.value)
+    }
+
+    const handleChangeOne = (event) => {
+        setPrivacy(event.currentTarget.value)
+    }
+
+    const handleChangeTwo = (event) => {
+        setCategories(event.currentTarget.value)
+    }
+
+    const onSubmit = (event) => {
+
+        event.preventDefault();
+
+       
+        if (title === "" || Description === "" ||
+            Categories === "" || FilePath === "" ||
+            Duration === "" || Thumbnail === "") {
+            return alert('Please first fill all the fields')
         }
-      }
-      if (err !== '') {
-        // error caught
-        event.target.value = null;
-        toast.error(err + " is/are too large. Please select file size < 50Mb");
-      }
-    }
-    return true;
-  }
 
-  fileChangeHandler(event) {
-    const files = event.target.files;
-    if (this.maxSelectFile(event)) {
-      this.setState({
-        selectedVideos: files,
-        loaded: 0
-      });
-    }
-  }
+        const variables = {
+            writer: user.userData._id,
+            title: title,
+            description: Description,
+            privacy: privacy,
+            filePath: FilePath,
+            category: Categories,
+            duration: Duration,
+            thumbnail: Thumbnail
+        }
 
-  fileUploadHandler(event) {
-    const data = new FormData();
-    for (let i = 0; i < this.state.selectedVideos.length; i++) {
-      data.append('file', this.state.selectedVideos[i]);
-    }
-    axios.post('http://127.0.0.1:3333/api/upload', data, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('userTokenTime')).token
-      }
-    }, {
-      onUploadProgress: ProgressEvent => {
-        this.setState({
-          loaded: (ProgressEvent.loaded / ProgressEvent.total * 100)
-        });
-      }
-    }).then(res => {
-      toast.success('Upload Successful');
-    }).catch(err => {
-      toast.error(`Upload Fail with status: ${err.statusText}`);
-    });
-  }
+        axios.post('/api/video/upload', variables)
+            .then(response => {
+                if (response.data.success) {
+                    alert('video Uploaded Successfully')
+                    props.history.push('/')
+                } else {
+                    alert('Failed to upload video')
+                }
+            })
 
-  render() {
-    if (!localStorage.getItem('userTokenTime')) return <Redirect to="/signIn" />
+    }
+
+    const onDrop = (files) => {
+
+        let formData = new FormData();
+        const config = {
+            header: { 'content-type': 'multipart/form-data' }
+        }
+        console.log(files)
+        formData.append("file", files[0])
+
+        axios.post('/api/video/uploadfiles', formData, config)
+            .then(response => {
+                if (response.data.success) {
+
+                    let variable = {
+                        filePath: response.data.filePath,
+                        fileName: response.data.fileName
+                    }
+                    setFilePath(response.data.filePath)
+
+                    //gerenate thumbnail with this filepath ! 
+
+                    axios.post('/api/video/thumbnail', variable)
+                        .then(response => {
+                            if (response.data.success) {
+                                setDuration(response.data.fileDuration)
+                                setThumbnail(response.data.thumbsFilePath)
+                            } else {
+                                alert('Failed to make the thumbnails');
+                            }
+                        })
+
+
+                } else {
+                    alert('failed to save the video in server')
+                }
+            })
+
+    }
+
     return (
-      <React.Fragment>
-        <Navbar />
-        <div className="container mt-5">
-          <div className="form-group">
-            <ToastContainer />
-          </div>
-          <h4>Upload Video</h4>
-          <hr className="my-4" />
-
-          <form method="post" name="videoUpload" action="/api/upload" id="#" encType="multipart/form-data">
-            <div className="form-group files">
-              <label>Upload Your Videos Here</label>
-              <input
-                type="file"
-                name="file"
-                className="form-control"
-                multiple="multiple"
-                accept="video/*"
-                onChange={this.fileChangeHandler.bind(this)} />
-              <Progress max="100" color="success" value={this.state.loaded} className="mt-4 mb-1">
-                {isNaN(Math.round(this.state.loaded, 2)) ? 0 : Math.round(this.state.loaded, 2)}%
-              </Progress>
-              <button
-                type="button"
-                className="btn btn-success btn-block"
-                onClick={this.fileUploadHandler.bind(this)}>Upload Video
-              </button>
+        <div style={{ maxWidth: '700px', margin: '2rem auto' }}>
+            <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                <Title level={2} > Upload Video</Title>
             </div>
-          </form>
+
+            <Form onSubmit={onSubmit}>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Dropzone
+                        onDrop={onDrop}
+                        multiple={false}
+                        maxSize={800000000}>
+                        {({ getRootProps, getInputProps }) => (
+                            <div style={{ width: '300px', height: '240px', border: '1px solid lightgray', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                {...getRootProps()}
+                            >
+                                <input {...getInputProps()} />
+                                <Icon type="plus" style={{ fontSize: '3rem' }} />
+
+                            </div>
+                        )}
+                    </Dropzone>
+
+                    {Thumbnail !== "" &&
+                        <div>
+                            <img src={`http://localhost:5000/${Thumbnail}`} alt="haha" />
+                        </div>
+                    }
+                </div>
+
+                <br /><br />
+                <label>Title</label>
+                <Input
+                    onChange={handleChangeTitle}
+                    value={title}
+                />
+                <br /><br />
+                <label>Description</label>
+                <TextArea
+                    onChange={handleChangeDecsription}
+                    value={Description}
+                />
+                <br /><br />
+
+                <select onChange={handleChangeOne}>
+                    {Private.map((item, index) => (
+                        <option key={index} value={item.value}>{item.label}</option>
+                    ))}
+                </select>
+                <br /><br />
+
+                <select onChange={handleChangeTwo}>
+                    {Catogory.map((item, index) => (
+                        <option key={index} value={item.label}>{item.label}</option>
+                    ))}
+                </select>
+                <br /><br />
+
+                <Button type="primary" size="large" onClick={onSubmit}>
+                    Submit
+            </Button>
+
+            </Form>
         </div>
-      </React.Fragment>
-    );
-  }
+    )
 }
 
-export default Upload;
+export default Upload

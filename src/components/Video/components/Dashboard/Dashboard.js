@@ -1,83 +1,71 @@
-import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import { FaCode } from "react-icons/fa";
+import { Card, Avatar, Col, Typography, Row } from 'antd';
 import axios from 'axios';
+import moment from 'moment';
+const { Title } = Typography;
+const { Meta } = Card;
+function Dashboard() {
+
+    const [Videos, setVideos] = useState([])
+
+    useEffect(() => {
+        axios.get('/api/video/getVideos')
+            .then(response => {
+                if (response.data.success) {
+                    console.log(response.data.videos)
+                    setVideos(response.data.videos)
+                } else {
+                    alert('Failed to get Videos')
+                }
+            })
+    }, [])
 
 
 
 
-class Dashboard extends React.Component {
-  constructor(props) {
-    super(props);
 
-    let shouldRedirect = false;
-    if (localStorage.getItem('userTokenTime')) {
-      // Check if user holds token which is valid in accordance to time
-      const data = JSON.parse(localStorage.getItem('userTokenTime'));
-      if (new Date().getTime() - data.time > (1 * 60 * 60 * 1000)) {
-        // It's been more than hour since you have visited dashboard
-        localStorage.removeItem('userTokenTime');
-        shouldRedirect = true;
-      }
-    } else {
-      shouldRedirect = true;
-    }
+    const renderCards = Videos.map((video, index) => {
 
-    this.state = {
-      redirect: shouldRedirect,
-      videoList: []
-    }
-  }
+        var minutes = Math.floor(video.duration / 60);
+        var seconds = Math.floor(video.duration - minutes * 60);
 
-  componentDidMount() {
-    if (localStorage.getItem('userTokenTime')) {
-      axios.get('http://127.0.0.1:3333/api/videoList', {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('userTokenTime')).token
-        }
-      }).then(res => {
-        this.setState({
-          videoList: res.data
-        });
-      });
-    }
-  }
+        return <Col lg={6} md={8} xs={24}>
+            <div style={{ position: 'relative' }}>
+                <img style={{ width: '100%' }} alt="thumbnail" src={`http://localhost:5000/${video.thumbnail}`} />
+                <div className=" duration"
+                    style={{ bottom: 0, right:0, position: 'absolute', margin: '4px', 
+                    color: '#fff', backgroundColor: 'rgba(17, 17, 17, 0.8)', opacity: 0.8, 
+                    padding: '2px 4px', borderRadius:'2px', letterSpacing:'0.5px', fontSize:'12px',
+                    fontWeight:'500', lineHeight:'12px' }}>
+                    <span>{minutes} : {seconds}</span>
+                </div>
+            </div><br />
+            <Meta
+                avatar={
+                    <Avatar src={video.writer.image} />
+                }
+                title={video.title}
+            />
+            <span>{video.writer.name} </span><br />
+            <span style={{ marginLeft: '3rem' }}> {video.views}</span>
+            - <span> {moment(video.createdAt).format("MMM Do YY")} </span>
+        </Col>
 
-  render() {
-    if (this.state.redirect) return <Redirect to="/signIn" />
+    })
 
-    const videos = this.state.videoList.map(video => {
-      return (
-        <div className="video col-xs-12 col-sm-12 col-md-3 col-lg-4" key={video._id}>
-          <Link to={'/video/' + video.upload_title}>
-            <div className="video-thumbnail">
-              <img src={video.thumbnail_path} alt="video thubmnail" />
-            </div>
-          </Link>
-          <span className="username">
-            <Link to={'/api/videos/' + video.upload_title}>
-              {video.uploader_name}
-            </Link>
-          </span>
-          <span className="video-title">{video.upload_title.replace(/_/g, ' ')}</span>
-        </div>
-      );
-    });
+
 
     return (
-      <React.Fragment>
-        <Navbar />
-        <div className="container mt-5">
-          <h4>Videos</h4>
-          <hr className="my-4" />
+        <div style={{ width: '85%', margin: '3rem auto' }}>
+            <Title level={2} > Recommended </Title>
+            <hr />
 
-          <div className="streams row">
-            {videos}
-          </div>
+            <Row>
+                {renderCards}
+            </Row>
         </div>
-      </React.Fragment>
-    );
-  }
+    )
 }
 
-export default Dashboard;
+export default Dashboard
