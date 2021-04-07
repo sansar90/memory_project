@@ -3,7 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 
 import './Dashboard.css';
-import Navbar from '../Navbar/Navbar';
+
 
 class Dashboard extends React.Component {
   constructor(props) {

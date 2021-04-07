@@ -6,7 +6,7 @@ import { Redirect } from 'react-router-dom';
 
 import 'react-toastify/dist/ReactToastify.css';
 import './Upload.css';
-import Navbar from '../Navbar/Navbar';
+
 
 class Upload extends React.Component {
   state = {
