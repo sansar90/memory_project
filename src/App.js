@@ -6,7 +6,7 @@ import Home from './components/Home/Home';
 import Navbar from './components/Navbar/Navbar';
 import Auth from './components/Auth/Auth';
 import Dashboard from './components/Video/components/Dashboard/Dashboard';
-import {Upload} from './components/Video/Upload/Upload';
+import Upload from './components/Video/Upload/Upload';
 import VideoPlayer from './components/Video/components/VideoPlayer/VideoPlayer';
 
 const App = () => (
