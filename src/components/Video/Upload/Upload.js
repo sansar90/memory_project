@@ -1,4 +1,16 @@
-  
+const create = async (params, credentials, media) => {
+  try {
+    let response = await fetch('http://localhost:3000/uploadvideos'+ params.userId, {
+    method: 'POST',
+   
+    body: media
+  })    
+    return await response.json()
+  } catch(err) {
+    console.log(err)
+  }
+}
+
 import React, {useState} from 'react'
 
 import Card from '@material-ui/core/Card'
@@ -57,7 +69,7 @@ export default function Upload(){
       error: '',
       mediaId: ''
   })
-  const jwt = auth.isAuthenticated()
+  const jwt = JSON.parse(localStorage.getItem('profile'));
 
   const clickSubmit = () => {
     let mediaData = new FormData()
@@ -66,7 +78,7 @@ export default function Upload(){
     values.description && mediaData.append('description', values.description)
     values.genre && mediaData.append('genre', values.genre)
     create({
-      userId: jwt.user._id
+      userId: jwt
     }, {
       t: jwt.token
     }, mediaData).then((data) => {
