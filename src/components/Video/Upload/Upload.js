@@ -1,6 +1,6 @@
   
 import React, {useState} from 'react'
-import auth from './../auth/auth-helper'
+
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography'
 import FileUpload from '@material-ui/icons/AddToQueue'
 import Icon from '@material-ui/core/Icon'
 import {makeStyles} from '@material-ui/core/styles'
-import {create} from './api-media.js'
+
 import {Redirect} from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function NewMedia(){
+export default function Upload(){
   const classes = useStyles()
   const [values, setValues] = useState({
       title: '',
@@ -86,7 +86,7 @@ export default function NewMedia(){
   }
 
     if (values.redirect) {
-      return (<Redirect to={'/media/' + values.mediaId}/>)
+      return (<Redirect to={'/' + values.mediaId}/>)
     }
     return (
       <Card className={classes.card}>
