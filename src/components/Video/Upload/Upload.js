@@ -1,18 +1,7 @@
-const create = async (params, credentials, media) => {
-  try {
-    let response = await fetch('http://localhost:3000/uploadvideos'+ params.userId, {
-    method: 'POST',
-   
-    body: media
-  })    
-    return await response.json()
-  } catch(err) {
-    console.log(err)
-  }
-}
+
 
 import React, {useState} from 'react'
-
+import { createVideo } from '../../actions/video';
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
@@ -58,29 +47,39 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function Upload(){
+
+
+export default function Upload({ currentId, setCurrentId }){
   const classes = useStyles()
   const [values, setValues] = useState({
       title: '',
-      video: '',
+      videoFile: '',
       description: '',
       genre: '',
-      redirect: false,
-      error: '',
-      mediaId: ''
-  })
-  const jwt = JSON.parse(localStorage.getItem('profile'));
+      mediaId:''
+  });
+  const video = useSelector((state) => (currentId ? state.video.find((description) => description._id === currentId) : null));
+  const dispatch = useDispatch();
+  const user = JSON.parse(localStorage.getItem('profile'));
+
+  useEffect(() => {
+    if (video) setValues(video);
+  }, [video]);
+
+
+ 
+
+ 
+  
 
   const clickSubmit = () => {
     let mediaData = new FormData()
     values.title && mediaData.append('title', values.title)
-    values.video && mediaData.append('video', values.video)
+    values.videoFile && mediaData.append('videoFile', values.videoFile)
     values.description && mediaData.append('description', values.description)
     values.genre && mediaData.append('genre', values.genre)
-    create({
-      userId: jwt
-    }, {
-      t: jwt.token
+    createVideo({
+      userName: user?.result?.name
     }, mediaData).then((data) => {
       if (data.error) {
         setValues({...values, error: data.error})
@@ -91,14 +90,14 @@ export default function Upload(){
   }
 
   const handleChange = name => event => {
-    const value = name === 'video'
+    const value = name === 'videoFile'
       ? event.target.files[0]
       : event.target.value
     setValues({...values, [name]: value })
   }
 
-    if (values.redirect) {
-      return (<Redirect to={'/' + values.mediaId}/>)
+   if (values.redirect) {
+      return (<Redirect to={'/video' + values.mediaId}/>)
     }
     return (
       <Card className={classes.card}>
@@ -106,13 +105,13 @@ export default function Upload(){
           <Typography type="headline" component="h1" className={classes.title}>
             New Video
           </Typography>
-          <input accept="video/*" onChange={handleChange('video')} className={classes.input} id="icon-button-file" type="file" />
+          <input accept="videoFile/*" onChange={handleChange('videoFile')} className={classes.input} id="icon-button-file" type="file" />
           <label htmlFor="icon-button-file">
             <Button color="secondary" variant="contained" component="span">
               Upload
               <FileUpload/>
             </Button>
-          </label> <span className={classes.filename}>{values.video ? values.video.name : ''}</span><br/>
+          </label> <span className={classes.filename}>{values.videoFile ? values.videoFile.name : ''}</span><br/>
           <TextField id="title" label="Title" className={classes.textField} value={values.title} onChange={handleChange('title')} margin="normal"/><br/>
           <TextField
             id="multiline-flexible"
