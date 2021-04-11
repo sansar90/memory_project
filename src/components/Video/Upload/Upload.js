@@ -1,7 +1,7 @@
 
 
 import React, {useState} from 'react'
-import { createVideo } from '../../actions/video';
+import { createVideo } from '../../../actions/video';
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
@@ -78,7 +78,7 @@ export default function Upload({ currentId, setCurrentId }){
     values.videoFile && mediaData.append('videoFile', values.videoFile)
     values.description && mediaData.append('description', values.description)
     values.genre && mediaData.append('genre', values.genre)
-    createVideo({
+    dispatch(createVideo({
       userName: user?.result?.name
     }, mediaData).then((data) => {
       if (data.error) {
@@ -86,7 +86,7 @@ export default function Upload({ currentId, setCurrentId }){
       } else {
         setValues({...values, error: '', mediaId: data._id, redirect: true})
       }
-    })
+    }))
   }
 
   const handleChange = name => event => {
