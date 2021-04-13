@@ -21,7 +21,7 @@ const App = () => (
         <Route path="/auth" exact component={Auth} />
         
         <Route exact path="/video" component={Dashboard} />
-        <Route exact path="/video/:videoTitle" component={VideoPlayer} />
+        <Route exact path="/videoPlayer/:id" component={VideoPlayer} />
         <Route exact path="/upload" component={Upload} />
       
       </Switch>

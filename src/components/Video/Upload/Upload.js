@@ -1,5 +1,5 @@
 
-
+/*
 import React, {useState} from 'react'
 import { createVideo } from '../../../actions/video';
 import Card from '@material-ui/core/Card'
@@ -137,3 +137,4 @@ export default function Upload({ currentId, setCurrentId }){
       </Card>
     )
   }
+  */

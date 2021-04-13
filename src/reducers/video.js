@@ -1,3 +1,4 @@
+/*
 import { FETCH_ALL, CREATE} from '../constants/actionTypes';
 
 export default (video = [], action) => {
@@ -8,3 +9,4 @@ export default (video = [], action) => {
       return [...video, action.payload];
   }
 };
+*/
