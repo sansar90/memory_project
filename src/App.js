@@ -5,9 +5,9 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Home from './components/Home/Home';
 import Navbar from './components/Navbar/Navbar';
 import Auth from './components/Auth/Auth';
-import Dashboard from './components/Video/components/Dashboard/Dashboard';
+import Video from './components/Video/Video';
 import Upload from './components/Video/Upload/Upload';
-import VideoPlayer from './components/Video/components/VideoPlayer/VideoPlayer';
+
 
 const App = () => (
   <BrowserRouter>
@@ -20,8 +20,8 @@ const App = () => (
         <Route path="/" exact component={Home} />
         <Route path="/auth" exact component={Auth} />
         
-        <Route exact path="/video" component={Dashboard} />
-        <Route exact path="/videoPlayer/:id" component={VideoPlayer} />
+        <Route exact path="/video" component={Video} />
+        
         <Route exact path="/upload" component={Upload} />
       
       </Switch>
