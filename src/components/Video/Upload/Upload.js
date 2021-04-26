@@ -49,7 +49,7 @@ class Upload extends React.Component {
     for (let i = 0; i < this.state.selectedVideos.length; i++) {
       data.append('file', this.state.selectedVideos[i]);
     }
-    axios.post('http://127.0.0.1:3333/api/upload', data, {
+    axios.post('http://127.0.0.1:3000/uploadVideo', data, {
       headers: {
         'Content-Type': 'application/json',
         
@@ -79,7 +79,7 @@ class Upload extends React.Component {
           <h4>Upload Video</h4>
           <hr className="my-4" />
 
-          <form method="post" name="videoUpload" action="/api/upload" id="#" encType="multipart/form-data">
+          <form method="post" name="videoUpload" action="/uploadVideo" id="#" encType="multipart/form-data">
             <div className="form-group files">
               <label>Upload Your Videos Here</label>
               <input
