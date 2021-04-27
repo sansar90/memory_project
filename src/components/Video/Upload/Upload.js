@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Progress } from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
 import './Upload.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -85,6 +86,7 @@ class Upload extends React.Component {
 
                 } 
       toast.success('Upload Successful');
+      
     }).catch(err => {
       toast.error(`Upload Fail with status: ${err.statusText}`);
       console.log(err);
@@ -124,6 +126,7 @@ class Upload extends React.Component {
             </div>
           </form>
         </div>
+        
       </React.Fragment>
     );
   }
