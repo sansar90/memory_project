@@ -49,7 +49,8 @@ class Upload extends React.Component {
     for (let i = 0; i < this.state.selectedVideos.length; i++) {
       data.append('file', this.state.selectedVideos[i]);
     }
-    axios.post('http://127.0.0.1:3000/uploadVideo', data, {
+  
+    axios.post('http://localhost:3000/upload/uploadfiles', data, {
       headers: {
         'Content-Type': 'application/json',
         
@@ -61,9 +62,32 @@ class Upload extends React.Component {
         });
       }
     }).then(res => {
+      if (res.data.success) {
+
+                    let data = {
+                        filePath: res.data.filePath,
+                        fileName: res.data.fileName
+                    }
+                    //setFilePath(res.data.filePath)
+
+                    //gerenate thumbnail with this filepath ! 
+
+                    axios.post('http://localhost:3000/upload/thumbnail', data)
+                        .then(res => {
+                            if (res.data.success) {
+                                setDuration(res.data.fileDuration)
+                                setThumbnail(res.data.thumbsFilePath)
+                            } else {
+                                alert('Failed to make the thumbnails');
+                            }
+                        })
+
+
+                } 
       toast.success('Upload Successful');
     }).catch(err => {
       toast.error(`Upload Fail with status: ${err.statusText}`);
+      console.log(err);
     });
   }
 
