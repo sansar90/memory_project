@@ -3,15 +3,18 @@ import axios from 'axios';
 import { Progress } from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-
+import React, { useState, useEffect } from 'react'
 import './Upload.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 class Upload extends React.Component {
+  
+  
   state = {
     selectedVideos: null,
     loaded: 0
   }
+  
 
   maxSelectFile(event) {
     let files = event.target.files;
@@ -34,6 +37,7 @@ class Upload extends React.Component {
     }
     return true;
   }
+ 
 
   fileChangeHandler(event) {
     const files = event.target.files;
@@ -86,7 +90,7 @@ class Upload extends React.Component {
 
                 } 
       toast.success('Upload Successful');
-      
+      //this.props.history.push('/video')
     }).catch(err => {
       toast.error(`Upload Fail with status: ${err.statusText}`);
       console.log(err);
