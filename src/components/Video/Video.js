@@ -33,7 +33,7 @@ const dashboard = React.memo(() => {
             >
                 <Link to={"/video/" + video.uploadTitle}>
                     <div className="video-thumbnail">
-                        <img src={video.thumbnailPath} alt="video thubmnail" />
+                        <img src={video.thumbnailPath}  />
                     </div>
                 </Link>
                 <span className="username">
