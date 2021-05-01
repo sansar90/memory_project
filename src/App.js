@@ -7,6 +7,7 @@ import Navbar from './components/Navbar/Navbar';
 import Auth from './components/Auth/Auth';
 import Video from './components/Video/Video';
 import Upload from './components/Video/Upload/Upload';
+import VideoPlayer from './components/Video/VideoPlayer/VideoPlayer';
 
 
 const App = () => (
@@ -23,6 +24,7 @@ const App = () => (
         <Route exact path="/video" component={Video} />
         
         <Route exact path="/upload" component={Upload} />
+        <Route exact path="/video/:videoTitle" component={VideoPlayer} />
       
       </Switch>
    
