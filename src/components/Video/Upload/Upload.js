@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Progress } from "reactstrap";
 import { ToastContainer, toast } from "react-toastify";
+import { useHistory } from 'react-router-dom';
 
 import "react-toastify/dist/ReactToastify.css";
 import "./Upload.css";
 
 
 const upload = React.memo(() => {
+  const history = useHistory();
   const [state, setState] = useState({
     selectedVideos: null,
     loaded: 0,
@@ -68,6 +70,7 @@ const upload = React.memo(() => {
       )
       .then((res) => {
         toast.success("Upload Successful");
+        history.push('/video');
       })
       .catch((err) => {
         toast.error(`Upload Fail with status: ${err.statusText}`);
