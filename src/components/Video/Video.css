@@ -1,23 +1,29 @@
 .video-thumbnail img {
-    width: 50%;
+  
+    display: grid;
+    height: 400px;
+  align-content: center;
+    grid-template-rows: 80px 200px;
+    justify-content: "flex-end";
+    flex-direction: column;
   }
   
   .video-title {
-    position: absolute;
-    font-size: 1rem;
+    align-self: start;
+    border: 0ch;
+    column-gap: normal;
+    display: block;
+    border-end-end-radius: inherit;
+    flex-direction: column;
+    flex-wrap: inherit;
+    list-style-position: inherit;
+    text-decoration: wavy;
+    font-size: 1.1rem;
     font-weight: 100;
+    size: 0vmax;
+    
+
+   
   }
   
-  .username {
-    position: absolute;
-    bottom: 5px;
-    left: 20px;
-    background-color: black;
-  }
   
-  .username a {
-    font-size: 18px;
-    color: white;
-    text-decoration: none;
-    padding: 2px 8px;
-  }

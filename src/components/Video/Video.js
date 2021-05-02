@@ -37,7 +37,7 @@ const dashboard = React.memo(() => {
                     </div>
                 </Link>
                 <span className="username">
-                    <Link to={"/videos/" + video.uploadTitle}>
+                    <Link to={"/video/" + video.uploadTitle}>
                         {video.uploaderName}
                     </Link>
                 </span>
@@ -55,7 +55,7 @@ const dashboard = React.memo(() => {
                 <h4>Videos</h4>
                 <hr className="my-4" />
 
-                <div className="streams row">{videos}</div>
+                <div className="stream rows">{videos}</div>
             </div>
         </React.Fragment>
     );
