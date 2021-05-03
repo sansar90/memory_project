@@ -28,7 +28,7 @@ const dashboard = React.memo(() => {
 
         return (
             <div
-                className="video col-xs-12 col-sm-12 col-md-3 col-lg-4"
+                className="video "//col-xs-12 col-sm-12 col-md-3 col-lg-4
                 key={video._id}
             >
                 <Link to={"/video/" + video.uploadTitle}>
@@ -52,10 +52,10 @@ const dashboard = React.memo(() => {
         <React.Fragment>
             
             <div className="container mt-5">
-                <h4>Videos</h4>
-                <hr className="my-4" />
+                <h1>Videos</h1>
+                <hr className="my-4" /> <hr className="my-4" />
 
-                <div className="stream rows">{videos}</div>
+                <div className="stream rows">{videos}<hr className="my-4" /></div>
             </div>
         </React.Fragment>
     );

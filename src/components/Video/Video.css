@@ -1,21 +1,43 @@
+.video {
+ margin: 2px;
+  width: 100%;
+  
+  border: currentColor;
+  
+  
+  position: relative;
+  padding-bottom: calc(var(--aspect-ratio, .5625) * 100%);
+  height: 0;
+
+}
 .video-thumbnail img {
   
-    display: grid;
-    height: 400px;
-  align-content: center;
+  border: 5px groove rgba(0, 87, 128,90);
+  padding: 50px;
+  margin: 20px;
+
+   width: 75%;
+   height: auto;
+  
+  border-radius: 10px;
+  overflow: hidden;
+    display: inline-block;
+    row-gap: 20;
+    align-content: center;
     grid-template-rows: 80px 200px;
     justify-content: "flex-end";
     flex-direction: column;
+    opacity: 1;
   }
   .video-title:hover {
     
   cursor: help;
   position: relative;
-  border: #666 2px dotted;
+  
   padding: 5px 20px 5px 5px;
   display: block;
   z-index: 100;
-  background: #e3e3e3;
+  
   left: 0px;
   margin: 15px;
   width: 300px;
@@ -25,11 +47,14 @@
 }
   
   .video-title {
-    align-self: start;
-    border: 0ch;
+    width: fit-content;
+    font-variant-east-asian: full-width;
+   	transition: 1s all;
+    text-align: center;
+    
     column-gap: normal;
     display: block;
-    border-end-end-radius: inherit;
+    border-end-end-radius: initial;
     flex-direction: column;
     flex-wrap: inherit;
     list-style-position: inherit;
@@ -39,13 +64,20 @@
     font-variant: small-caps;
     size: 0vmax;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    border-bottom: 1px dashed;
-    font-stretch: wider;
-    color:black;
-    background-color: rgb(20, 220, 187);
+    border-bottom: 1px groove;
+    border: 1px transparent ;
+    font-stretch: condensed;
+    color: rgba(red, green, blue, alpha);
+    
   
 
    
+  }
+  .container mt-5 h1{
+    font-style: italic;
+    color:lightskyblue;
+    text-align: center;
+
   }
   
   
