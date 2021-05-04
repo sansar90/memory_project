@@ -29,24 +29,10 @@
     flex-direction: column;
     opacity: 1;
   }
-  .video-title:hover {
-    
-  cursor: help;
-  position: relative;
-  
-  padding: 5px 20px 5px 5px;
-  display: block;
-  z-index: 100;
-  
-  left: 0px;
-  margin: 15px;
-  width: 300px;
-  
-  top: 15px;
-  text-decoration: none;
-}
+
   
   .video-title {
+    
     width: fit-content;
     font-variant-east-asian: full-width;
    	transition: 1s all;
@@ -77,6 +63,15 @@
     font-style: italic;
     color:lightskyblue;
     text-align: center;
+
+  }
+  .video-title:before{
+    font-family: FontAwesome;
+   display: inline-block;
+   padding-right: 6px;
+   vertical-align: middle;
+   content: "\f005";
+   
 
   }
   
