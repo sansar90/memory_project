@@ -31,11 +31,7 @@ const dashboard = React.memo(() => {
                 className="video "//col-xs-12 col-sm-12 col-md-3 col-lg-4
                 key={video._id}
             >
-                <Link to={"/video/" + video.uploadTitle}>
-                    <div className="video-thumbnail">
-                        <img src={video.thumbnailPath}  />
-                    </div>
-                </Link>
+                
                 <span className="username">
                     <Link to={"/video/" + video.uploadTitle}>
                         {video.uploaderName}
@@ -44,6 +40,11 @@ const dashboard = React.memo(() => {
                 <span className="video-title">
                     {video.uploadTitle}
                 </span>
+                <Link to={"/video/" + video.uploadTitle}>
+                    <div className="video-thumbnail">
+                        <img src={video.thumbnailPath}  />
+                    </div>
+                </Link>
             </div>
         );
     });
